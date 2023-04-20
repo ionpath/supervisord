@@ -275,3 +275,16 @@ supervisord service start
 supervisord service stop
 ```
 
+# Building from a Mac
+Install `gox` so you can compile the executable (I believe it will also install `golang`):
+```
+brew install gox
+```
+
+Run the following commands:
+```
+go get github.com/mitchellh/gox
+go get github.com/tcnksm/ghr
+gox -output "dist/supervisord_{{.OS}}_{{.Arch}}" -osarch="windows/amd64"
+```
+
