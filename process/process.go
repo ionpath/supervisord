@@ -937,6 +937,7 @@ type WindowsProcess struct {
 	Exe             string
 }
 
+// Inspired by https://github.com/denisbrodbeck/how2readwindowsprocesses/blob/master/main.go
 func processes() ([]WindowsProcess, error) {
 	handle, err := windows.CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0)
 	if err != nil {
