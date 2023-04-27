@@ -261,3 +261,22 @@ supervisord service start
 supervisord service stop
 ```
 
+# Building from a Mac
+Install `golang`:
+```
+brew install go
+```
+
+Run the following commands to setup your repo:
+```
+# Maybe run the following?:
+# go generate ./...
+# go mod download
+go get github.com/mitchellh/gox
+go get github.com/tcnksm/ghr
+```
+
+Build the windows executable using the following:
+```
+CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -tags release -a -ldflags "-s -w" -o dist/supervisord_windows_amd64.exe
+```
