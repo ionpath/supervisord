@@ -211,6 +211,20 @@ Multiple log files can be configured for the stdout_logfile and stderr_logfile w
 stdout_logfile = test.log, /dev/stdout
 ```
 
+### syslog settings
+
+if write the log to the syslog, following additional parameter can be set like:
+```ini
+syslog_facility=local0
+syslog_tag=test
+syslog_stdout_priority=info
+syslog_stderr_priority=err
+```
+- **syslog_facility**, can be one of(case insensitive): KERNEL, USER, MAIL, DAEMON, AUTH, SYSLOG, LPR, NEWS, UUCP, CRON, AUTHPRIV, FTP, LOCAL0~LOCAL7
+- **syslog_stdout_priority**, can be one of(case insensitive): EMERG, ALERT, CRIT, ERR, WARN, NOTICE, INFO, DEBUG
+- **syslog_stderr_priority**, can be one of(case insensitive): EMERG, ALERT, CRIT, ERR, WARN, NOTICE, INFO, DEBUG
+
+
 # Web GUI
 
 Supervisord has builtin web GUI: you can start, stop & check the status of program from the GUI. Following picture shows the default web GUI:
@@ -261,22 +275,41 @@ supervisord service start
 supervisord service stop
 ```
 
-# Building from a Mac
-Install `golang`:
+# Installing `gox` from a Mac
+Install `gox` so you can compile the executable (I believe it will also install `golang`):
 ```
-brew install go
+brew install gox
 ```
 
-Run the following commands to setup your repo:
+# Installing `gox` from Ubuntu
+- Download golang from here: https://go.dev/dl/
+- Install golang using these directions: https://go.dev/doc/install
+
 ```
-# Maybe run the following?:
-# go generate ./...
-# go mod download
+# Install golang
+curl -O https://storage.googleapis.com/golang/go1.11.1.linux-amd64.tar.gz
+sudo tar -C /usr/local -xzf go1.11.1.linux-amd64.tar.gz
+mkdir -p ~/go; echo "export GOPATH=$HOME/go" >> ~/.bashrc
+```
+Add the following line to the bottom of your `~/.bashrc` file:
+```
+export PATH=$PATH:$HOME/go/bin:/usr/local/go/bin"
+```
+Open a new terminal or run the following:
+```
+source ~/.bashrc
+```
+
+```
+# Instal gox?
+sudo apt install gox
+```
+
+# Building app from `gox`
+Run the following commands (I am not sure if all of these are necessary):
+```
 go get github.com/mitchellh/gox
 go get github.com/tcnksm/ghr
-```
-
-Build the windows executable using the following:
-```
-CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -tags release -a -ldflags "-s -w" -o dist/supervisord_windows_amd64.exe
+go build -v ./...
+GOOS=windows GOARCH=amd64 go build -o dist/supervisord_windows_amd64.exe
 ```
